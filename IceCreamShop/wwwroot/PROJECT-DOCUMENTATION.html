@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="תיעוד, סקירת מצב והצעות להמשך לפרויקט Ice Cream Shop">
+    <title>תיעוד וסקירת פרויקט — Ice Cream Shop</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #29233a;
+            --muted: #625c70;
+            --paper: #fffaf5;
+            --card: #ffffff;
+            --line: #e8dced;
+            --accent: #713e83;
+            --accent-soft: #f3eaf5;
+            --warning: #fff4d8;
+            --warning-line: #d7a42a;
+            --good: #e8f6ed;
+            --good-line: #3a8b56;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+            line-height: 1.7;
+        }
+
+        * { box-sizing: border-box; }
+
+        body { margin: 0; padding: 2rem 1rem 4rem; }
+        main { max-width: 1000px; margin: 0 auto; }
+        header {
+            padding: 2rem;
+            border-radius: 18px;
+            color: #fff;
+            background: linear-gradient(130deg, #713e83, #a75e91);
+        }
+        header h1 { margin: 0 0 .4rem; font-size: clamp(1.8rem, 5vw, 2.8rem); }
+        header p { margin: .25rem 0; }
+        h2 { margin: 2.2rem 0 .7rem; color: var(--accent); }
+        h3 { margin: 1.2rem 0 .4rem; }
+        a { color: #5e3070; }
+        .subtitle { opacity: .94; }
+        .card {
+            margin: 1rem 0;
+            padding: 1.1rem 1.3rem;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--card);
+        }
+        .notice, .success {
+            margin: 1rem 0;
+            padding: .8rem 1rem;
+            border-right: 5px solid var(--warning-line);
+            border-radius: 8px;
+            background: var(--warning);
+        }
+        .success {
+            border-color: var(--good-line);
+            background: var(--good);
+        }
+        .muted { color: var(--muted); }
+        code, pre {
+            direction: ltr;
+            text-align: left;
+            font-family: Consolas, "Courier New", monospace;
+        }
+        code {
+            padding: .08rem .3rem;
+            border-radius: 4px;
+            background: #f2eef4;
+            overflow-wrap: anywhere;
+        }
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+            border-radius: 8px;
+            color: #f5eff8;
+            background: #25202d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+        th, td {
+            padding: .7rem;
+            border: 1px solid var(--line);
+            vertical-align: top;
+            text-align: right;
+        }
+        th { background: var(--accent-soft); }
+        .tag {
+            display: inline-block;
+            padding: .08rem .5rem;
+            border-radius: 999px;
+            color: #542869;
+            background: var(--accent-soft);
+            font-size: .88rem;
+            white-space: nowrap;
+        }
+        .small { font-size: .92rem; }
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+        }
+        @media (max-width: 650px) {
+            body { padding: 1rem .6rem 2rem; }
+            header { padding: 1.3rem; }
+            .card { padding: .9rem; }
+            table { font-size: .92rem; }
+            th, td { padding: .5rem; }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <header>
+        <h1>Ice Cream Shop</h1>
+        <p class="subtitle">תיעוד מלא, סקירת מצב והמלצות להמשך</p>
+        <p>פרויקט ASP.NET Core המבוסס על מבנה הדוגמה Weather Forecast ועל פרויקט חנות הפיצה של המורה.</p>
+    </header>
+
+    <section aria-labelledby="summary">
+        <h2 id="summary">סיכום קצר</h2>
+        <div class="card">
+            <p>
+                הפרויקט כולל API לניהול טעמי גלידה, ממשק דפדפן, שמירת נתונים בקובץ JSON,
+                middleware לסגירת החנות, Swagger ודוגמת Weather Forecast.
+                המבנה הוא של ASP.NET Core עם Controllers, מודלים, שירות וממשק שירות.
+            </p>
+            <div class="success">
+                <strong>מצב בדיקות:</strong>
+                הבנייה האחרונה הצליחה ללא שגיאות ואזהרות. בבדיקות HTTP התקבלו תשובות תקינות
+                מהאתר, מ-Swagger, מ-Weather Forecast ומ-API הגלידות. גם תרחישי CRUD ותגובה
+                503 כשהחנות סגורה נבדקו.
+            </div>
+            <div class="notice">
+                <strong>הערת נתונים:</strong>
+                בזמן הסקירה, <code>Data/icecream.json</code> מכיל 3 טעמים, בעוד
+                <code>icecream.json</code> שבשורש מכיל 4 (כולל Vanilla). השירות משתמש בקובץ שבתיקיית
+                <code>Data</code>. לא העתקתי אליו מחדש את נתוני הפתיחה כדי לא למחוק שינוי שנעשה במהלך
+                שימוש בפרויקט.
+            </div>
+        </div>
+    </section>
+
+    <section aria-labelledby="run">
+        <h2 id="run">הפעלה</h2>
+        <div class="card">
+            <p>נדרש .NET 10 SDK. פותחים PowerShell בתיקיית הפרויקט:</p>
+            <pre><code>cd C:\תכנות\core\all\dot-net\IceCreamShop
+dotnet restore
+dotnet run</code></pre>
+            <p>בפרופיל הפיתוח:</p>
+            <ul>
+                <li>Swagger: <code>https://localhost:5001/swagger</code></li>
+                <li>ממשק החנות: <code>https://localhost:5001/</code></li>
+                <li>Weather Forecast: <code>https://localhost:5001/WeatherForecast</code></li>
+                <li>API גלידות: <code>https://localhost:5001/IceCream</code></li>
+            </ul>
+            <p class="muted small">
+                אפשר להריץ <code>dotnet build</code> כדי לבנות בלבד. הפורטים שמוגדרים בפרופיל הם
+                5000 ו-5001; אם אחד תפוס, יש לבחור פורט אחר. הכתובת 5099 ששימשה בבדיקות אינה
+                בהכרח כתובת ההרצה הרגילה.
+            </p>
+        </div>
+    </section>
+
+    <section aria-labelledby="architecture">
+        <h2 id="architecture">איך הפרויקט בנוי</h2>
+        <div class="card">
+            <p>המסלול של בקשת API הוא:</p>
+            <pre><code>דפדפן / לקוח API
+    → middleware לסגירת החנות
+    → Controller
+    → IIceCreamService
+    → IceCreamService
+    → Data/icecream.json</code></pre>
+            <p>
+                <a href="../Program.cs">Program.cs</a> רושם Controllers, Swagger ואת השירות
+                <code>IIceCreamService</code>, ומגדיר את סדר ה-middleware. תיעוד Swagger פעיל
+                רק בסביבת Development. כשהחנות פתוחה, בקשות לדף עוברות דרך static files ובקשות API
+                ממופות ל-Controllers. המיקום של middleware הסגירה לפני קבצים סטטיים ו-Controllers
+                גורם לו לעצור גם את ממשק החנות וגם את ה-API; Swagger נרשם לפניו.
+            </p>
+        </div>
+        <table>
+            <thead>
+                <tr><th>קובץ / תיקייה</th><th>תפקיד</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><a href="../IceCreamShop.csproj">IceCreamShop.csproj</a></td><td>הגדרות Web SDK, יעד .NET 10 ותלות Swagger.</td></tr>
+                <tr><td><a href="../Program.cs">Program.cs</a></td><td>נקודת הכניסה, רישום תלויות והרכבת צינור הבקשות.</td></tr>
+                <tr><td><a href="../Controllers/IceCreamController.cs">Controllers/IceCreamController.cs</a></td><td>נקודות הקצה של יצירה, קריאה, עדכון ומחיקה.</td></tr>
+                <tr><td><a href="../Controllers/WeatherForecastController.cs">Controllers/WeatherForecastController.cs</a></td><td>נקודת הקצה לדוגמת תחזית מזג האוויר.</td></tr>
+                <tr><td><a href="../Models/IceCream.cs">Models/IceCream.cs</a></td><td>מודל של טעם: מזהה, שם וסימון ללא חלב.</td></tr>
+                <tr><td><a href="../Models/WeatherForecast.cs">Models/WeatherForecast.cs</a></td><td>מבנה הנתונים של תחזית מזג האוויר, כולל המרה לפרנהייט.</td></tr>
+                <tr><td><a href="../Interfaces/IIceCreamService.cs">Interfaces/IIceCreamService.cs</a></td><td>חוזה הפעולות שה-Controller מבקש משירות התפריט.</td></tr>
+                <tr><td><a href="../Services/IceCreamService.cs">Services/IceCreamService.cs</a></td><td>טעינה ושמירה של התפריט לקובץ JSON ופעולות על הרשימה.</td></tr>
+                <tr><td><a href="../Data/icecream.json">Data/icecream.json</a></td><td>קובץ הנתונים הפעיל בזמן ריצה.</td></tr>
+                <tr><td><a href="../icecream.json">icecream.json</a></td><td>עותק נוסף של תפריט הפתיחה. השירות אינו קורא ממנו או מעדכן אותו.</td></tr>
+                <tr><td><a href="../Middleware/ShopClosedMiddleware.cs">Middleware/ShopClosedMiddleware.cs</a></td><td>עצירת בקשות עם HTTP 503 כשההגדרה <code>ShopClosed</code> מופעלת.</td></tr>
+                <tr><td><a href="./index.html">wwwroot/index.html</a></td><td>מבנה דף ניהול התפריט.</td></tr>
+                <tr><td><a href="./css/site.css">wwwroot/css/site.css</a></td><td>עיצוב רספונסיבי לדף.</td></tr>
+                <tr><td><a href="./js/site.js">wwwroot/js/site.js</a></td><td>שליחת בקשות API, הצגת טעמים וניהול הטפסים בדפדפן.</td></tr>
+                <tr><td><a href="../appsettings.json">appsettings.json</a></td><td>רמות לוג, Hosts והגדרת פתיחה/סגירה.</td></tr>
+                <tr><td><a href="../appsettings.Development.json">appsettings.Development.json</a></td><td>הגדרות לוג לסביבת פיתוח.</td></tr>
+                <tr><td><a href="../Properties/launchSettings.json">Properties/launchSettings.json</a></td><td>כתובות ופרופיל הרצה מקומי שפותח Swagger.</td></tr>
+                <tr><td><a href="../.gitignore">.gitignore</a></td><td>התעלמות מקובצי build שנוצרים בתיקיות bin ו-obj.</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section aria-labelledby="endpoints">
+        <h2 id="endpoints">נקודות קצה</h2>
+        <div class="card">
+            <table>
+                <thead><tr><th>שיטה ונתיב</th><th>פעולה ותוצאה</th></tr></thead>
+                <tbody>
+                    <tr><td><code>GET /IceCream</code></td><td>מחזיר את כל הטעמים.</td></tr>
+                    <tr><td><code>GET /IceCream/{id}</code></td><td>מחזיר טעם בודד או 404 אם אינו קיים.</td></tr>
+                    <tr><td><code>POST /IceCream</code></td><td>מוסיף טעם ומחזיר 201 עם כתובת הפריט החדש.</td></tr>
+                    <tr><td><code>PUT /IceCream/{id}</code></td><td>מעדכן טעם. מחזיר 400 אם מזהה הנתיב והגוף שונים, 404 אם לא נמצא, או 204 בהצלחה.</td></tr>
+                    <tr><td><code>DELETE /IceCream/{id}</code></td><td>מוחק טעם. מחזיר 404 אם לא נמצא או 204 בהצלחה.</td></tr>
+                    <tr><td><code>GET /WeatherForecast</code></td><td>מחזיר חמש תחזיות לדוגמה עם תאריך, טמפרטורה, פרנהייט וסיכום.</td></tr>
+                </tbody>
+            </table>
+            <h3>דוגמת גוף להוספת טעם</h3>
+            <pre><code>{
+  "name": "Pistachio",
+  "isDairyFree": false
+}</code></pre>
+            <p>
+                השרת מקצה את ה-ID. השם מסומן כ-Required. ה-UI משתמש בנתיב
+                <code>/icecream</code>; ASP.NET Core מנתב אותו לאותה פעולה.
+            </p>
+        </div>
+    </section>
+
+    <section aria-labelledby="configuration">
+        <h2 id="configuration">נתונים והגדרות</h2>
+        <div class="card">
+            <ul>
+                <li><code>IceCreamService</code> קורא את <code>Data/icecream.json</code> בעת יצירת השירות.</li>
+                <li>כל הוספה, עדכון ומחיקה נכתבים חזרה לאותו קובץ.</li>
+                <li>השירות רשום כ-Singleton; רשימת הטעמים נשארת בזיכרון כל עוד התהליך רץ.</li>
+                <li><code>ShopClosed=false</code> מאפשר את הבקשות; <code>true</code> מחזיר 503 וטקסט הסבר.</li>
+                <li>אפשר להגדיר <code>ShopClosed</code> גם כמשתנה סביבה <code>ShopClosed=true</code>; הגדרת סביבה גוברת על JSON.</li>
+                <li>לשחזור תפריט הפתיחה, יש להחליף את <code>Data/icecream.json</code> בתוכן העותק <code>icecream.json</code>. פעולה זו תחליף את הנתונים הפעילים.</li>
+            </ul>
+            <p class="notice">
+                JSON הוא אחסון לימודי פשוט, לא מסד נתונים. עריכה מקבילה, תהליך שרת נוסף או כיבוי בזמן כתיבה
+                עלולים ליצור אובדן נתונים או קובץ חלקי.
+            </p>
+        </div>
+    </section>
+
+    <section aria-labelledby="changes">
+        <h2 id="changes">מה בדיוק נוצר ושונה</h2>
+        <div class="card">
+            <ol>
+                <li>נוצר פרויקט <code>IceCreamShop</code> נפרד בתוך תיקיית <code>dot-net</code>, עם חלוקה ל-Controllers, Models, Services, Interfaces, Middleware, Data ו-<code>wwwroot</code>.</li>
+                <li>הותאם מודל החנות: פריט Pizza הפך לטעם IceCream, והשדה GlutenFree הפך ל-IsDairyFree.</li>
+                <li>נבנה API CRUD ו-UI סטטי שמתחבר אליו; הוספתי בדיקות תגובת HTTP והצגת שגיאות בצד הדפדפן.</li>
+                <li>הוספתי middleware בשם ShopClosed, שמחזיר 503 לפני הטיפול בדף וב-API כשהחנות סגורה.</li>
+                <li>נשמרה דוגמת Weather Forecast כ-Controller ומודל. נשמר מבנה Controllers/Routes של הדוגמה; תאריך הדוגמה הוא DateOnly והערכים נוצרים באמצעות Random.Shared.</li>
+                <li>הפרויקט הוגדר ל-<code>net10.0</code> כי בסביבת ההרצה היה מותקן .NET 10 בלבד, ללא runtime של .NET 8.</li>
+                <li>גרסת Swashbuckle עודכנה ל-<code>10.3.1</code> לאחר שגרסה קודמת הביאה תלות Microsoft.OpenApi עם התראת אבטחה. סריקת החבילות לאחר העדכון לא מצאה חבילות פגיעות.</li>
+                <li>נוסף README באנגלית עם הוראות הפעלה, API ומפת הקבצים; דף HTML זה מוסיף תיעוד וסקירה בעברית.</li>
+            </ol>
+            <p class="muted">
+                זו התאמה של הדוגמה ולא העתקה מילולית של כל קובצי המורה: שם הפרויקט, שדות הנתונים,
+                גרסת .NET, חבילת Swagger וממשק המשתמש הותאמו.
+            </p>
+        </div>
+    </section>
+
+    <section aria-labelledby="gaps">
+        <h2 id="gaps">מה חסר / מה כדאי להשלים</h2>
+        <div class="card">
+            <table>
+                <thead><tr><th>עדיפות</th><th>חסר או מגבלה</th><th>משמעות והשלמה אפשרית</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tag">חשוב עכשיו</span></td>
+                        <td>אין בדיקות אוטומטיות בפרויקט.</td>
+                        <td>בדיקות ידניות עברו, אך אין בדיקות שחוזרות אוטומטית אחרי שינוי. להוסיף פרויקט בדיקות עם בדיקות Controller/Service ובדיקת API.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">חשוב עכשיו</span></td>
+                        <td>שני קובצי JSON שונים משמשים למטרות דומות.</td>
+                        <td>השירות משתמש רק ב-<code>Data/icecream.json</code>; העותק בשורש עלול להטעות. מומלץ לבחור מקור אמת יחיד ולתעד או להסיר את הכפילות.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">חשוב עכשיו</span></td>
+                        <td>קובץ הנתונים הפעיל שונה מתפריט הפתיחה.</td>
+                        <td>בבדיקה נמצאו שלושה פריטים פעילים לעומת ארבעה בקובץ השורש. כדאי להחליט אם זו עריכה מכוונת; לא שוחזר אוטומטית כדי לא לדרוס נתונים.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">לפי דרישת החנות</span></td>
+                        <td>מודל מוצר מצומצם.</td>
+                        <td>יש רק שם וסימון Dairy-Free. חנות אמיתית עשויה להזדקק למחיר, תיאור, גדלים, אלרגנים, רכיבים, מלאי וזמינות.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">לפי דרישת החנות</span></td>
+                        <td>אין הזמנות או סל קניות.</td>
+                        <td>הפרויקט מנהל קטלוג טעמים בלבד; אין לקוחות, עגלת קניות, הזמנה, תשלום או מעקב משלוח.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">לפני שימוש אמיתי</span></td>
+                        <td>אין בסיס נתונים או מנגנון כתיבה בטוח במקביל.</td>
+                        <td>קובץ JSON מתאים ללימוד. לשרת אמיתי מומלץ מסד נתונים, ולכל הפחות הגנה מפני עדכונים מקבילים ושמירה אטומית.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">לפני שימוש אמיתי</span></td>
+                        <td>אין אימות משתמשים והרשאות.</td>
+                        <td>כל מי שמגיע ל-API יכול לנסות להוסיף, לערוך ולמחוק טעמים. יש להגדיר הרשאות לממשק ניהול לפני פריסה.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">לפני שימוש אמיתי</span></td>
+                        <td>אימות קלט מוגבל.</td>
+                        <td><code>[Required]</code> דורש שם, אך אין הגבלת אורך, נירמול/trim בצד השרת או כללי תחום למאפיינים.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">שיפור</span></td>
+                        <td>אין טיפול שגיאות API אחיד או לוג תפעולי ייעודי.</td>
+                        <td>שגיאת קובץ/IO עלולה להפוך לתשובת שגיאת שרת כללית. אפשר להוסיף middleware לטיפול בחריגות, Problem Details ולוגים מתאימים.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">שיפור</span></td>
+                        <td>אין מדיניות CORS, פריסה או תצורת Production מתועדת.</td>
+                        <td>באתר סטטי מאותו host אין צורך ב-CORS; אם ה-UI יופרד או תתווסף פריסה, יש להגדיר מקור, HTTPS, Secrets ותהליך פרסום בהתאם.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag">שיפור תיעוד</span></td>
+                        <td>אין תיעוד API מורחב של דוגמאות/שגיאות או מדריך בדיקות אוטומטי.</td>
+                        <td>Swagger קיים ומציג את הפעולות, אך כדאי לתעד דוגמאות, קודי שגיאה, כללי קלט ותהליך בדיקות.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section aria-labelledby="verification">
+        <h2 id="verification">מה אומת בסקירה</h2>
+        <div class="card">
+            <ul>
+                <li><code>dotnet build</code> לפרויקט הסתיים בהצלחה, 0 שגיאות ו-0 אזהרות לאחר עדכון החבילה.</li>
+                <li>בדיקת חבילות NuGet לא הציגה חבילות פגיעות במקורות שהוגדרו.</li>
+                <li>בבדיקת HTTP הנוכחית התקבלו 200 עבור <code>/</code>, <code>/swagger/index.html</code>, <code>/WeatherForecast</code> ו-<code>/IceCream</code>.</li>
+                <li>בבדיקות קודמות נבדקו הוספה, עדכון, מחיקה, 404 לפריט שנמחק ו-503 כשהחנות סגורה.</li>
+                <li>אין בפרויקט כרגע בדיקות אוטומטיות שמבצעות את התרחישים האלה בעצמן.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section aria-labelledby="source-docs">
+        <h2 id="source-docs">מסמכי הפרויקט</h2>
+        <div class="card">
+            <ul>
+                <li><a href="../README.md">README.md</a> — מדריך הפעלה טכני באנגלית.</li>
+                <li><a href="./PROJECT-DOCUMENTATION.html">PROJECT-DOCUMENTATION.html</a> — המסמך הזה, בעברית.</li>
+            </ul>
+            <p class="notice">
+                הערת מצב Git מחוץ לתיקיית הפרויקט: <code>dot-net/README.md</code> מסומן כרגע כקובץ שנמחק.
+                המחיקה כבר הופיעה במצב המאגר בזמן תחילת הסקירה; לא שיניתי ולא שחזרתי את הקובץ הזה.
+            </p>
+            <p class="muted small">
+                קישור למסמך HTML זה: <code>PROJECT-DOCUMENTATION.html</code> בתוך תיקיית IceCreamShop.
+                אפשר לפתוח אותו בדפדפן באמצעות פתיחת הקובץ או דרך האתר בכתובת
+                <code>/PROJECT-DOCUMENTATION.html</code> בזמן שהאפליקציה פועלת.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>המסמך מתאר את מצב קובצי המקור בזמן הסקירה. תכונות שמופיעות תחת "כדאי להשלים" הן המלצות — הן לא נוספו לפרויקט כחלק מהתיעוד הזה.</p>
+    </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,145 @@
+:root {
+    color-scheme: light;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #30243a;
+    background: #fff8f2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 2rem 1rem;
+}
+
+main {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin-bottom: 0.25rem;
+    color: #713e83;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.intro {
+    margin-top: 0;
+    color: #665c6b;
+}
+
+section {
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    border: 1px solid #ead8ed;
+    border-radius: 12px;
+    background: #fff;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+form > label:not(.checkbox-label) {
+    width: 100%;
+    font-weight: 600;
+}
+
+input[type="text"] {
+    min-width: 220px;
+    padding: 0.65rem;
+    border: 1px solid #b9a8be;
+    border-radius: 6px;
+}
+
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+button {
+    padding: 0.65rem 0.9rem;
+    border: 0;
+    border-radius: 6px;
+    color: #fff;
+    background: #713e83;
+    font: inherit;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #572d67;
+}
+
+button.secondary {
+    color: #30243a;
+    background: #eee5ef;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+th,
+td {
+    padding: 0.7rem;
+    border: 1px solid #ead8ed;
+    text-align: left;
+}
+
+th {
+    background: #f4eaf5;
+}
+
+td:last-child {
+    white-space: nowrap;
+}
+
+td button + button {
+    margin-left: 0.35rem;
+}
+
+#message {
+    min-height: 1.5em;
+    color: #9a302c;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
+@media (max-width: 520px) {
+    form {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    form > * {
+        width: 100%;
+    }
+
+    .checkbox-label {
+        justify-content: flex-start;
+    }
+}
