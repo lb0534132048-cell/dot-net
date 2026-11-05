@@ -16,11 +16,19 @@ public class IceCreamController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<IceCream>> GetAll() => _iceCreamService.GetAll();
+
+    public ActionResult<List<IceCream>> GetAll() 
+    {
+          
+         return _iceCreamService.GetAll();
+
+    
+    }     
 
     [HttpGet("{id:int}")]
     public ActionResult<IceCream> Get(int id)
     {
+        
         var iceCream = _iceCreamService.Get(id);
         return iceCream is null ? NotFound() : iceCream;
     }

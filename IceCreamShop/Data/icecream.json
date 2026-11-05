@@ -1,17 +1,1 @@
-[
-  {
-    "Id": 2,
-    "Name": "Chocolate",
-    "IsDairyFree": false
-  },
-  {
-    "Id": 3,
-    "Name": "Strawberry Sorbet",
-    "IsDairyFree": true
-  },
-  {
-    "Id": 4,
-    "Name": "Mango Sorbet",
-    "IsDairyFree": true
-  }
-]
+[]
